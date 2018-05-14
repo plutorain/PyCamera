@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>639</width>
-    <height>507</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>80</y>
+      <x>0</x>
+      <y>130</y>
       <width>621</width>
       <height>381</height>
      </rect>
@@ -50,9 +50,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
-      <width>271</width>
-      <height>61</height>
+      <y>70</y>
+      <width>211</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -62,14 +62,27 @@
    <widget class="QPushButton" name="captureButton">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>10</y>
-      <width>271</width>
-      <height>61</height>
+      <x>230</x>
+      <y>70</y>
+      <width>251</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Capture</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>471</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string/>
     </property>
    </widget>
   </widget>

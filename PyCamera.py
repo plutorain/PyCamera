@@ -8,7 +8,7 @@ import threading
 from datetime import datetime
 import Queue
 import os
-#import device
+import device
 
 running = False
 capture_thread = None
@@ -67,8 +67,8 @@ class OwnImageWidget(QWidget):
 
 
 class MyWindowClass(QMainWindow, form_class):
-    def __init__(self, parent=None):
-        QMainWindow.__init__(self, parent)
+    def __init__(self):
+        QMainWindow.__init__(self)
         self.setupUi(self)
 
         self.startButton.clicked.connect(self.start_clicked)
@@ -82,15 +82,32 @@ class MyWindowClass(QMainWindow, form_class):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(1)
+        
+              
+        # Get camera list
+        self.device_list = device.getDeviceList()
+        print(self.device_list)
+        index = 0
+        for name in self.device_list:
+            print(str(index) + ': ' + name)
+            self.comboBox.insertItem(index, name)
+            index += 1
+        self.last_index = index - 1
 
+        if self.last_index < 0:
+            print("No device is connected")
+            self.startButton.setEnabled(False)
+        
 
     def start_clicked(self):
+        global capture_thread
+        cam_index=self.comboBox.currentIndex()
+        capture_thread = threading.Thread(target=grab, args = (0, q, 1920, 1080, 30))
         global running
         running = True
         capture_thread.start()
         self.startButton.setEnabled(False)
         self.startButton.setText('Starting...')
-        
         self.captureButton.setEnabled(True)
     
     def capture_clicked(self):
@@ -118,24 +135,20 @@ class MyWindowClass(QMainWindow, form_class):
             bpl = bpc * width
             image = QImage(img.data, width, height, bpl, QImage.Format_RGB888)
             self.ImgWidget.setImage(image)
+            
 
     def closeEvent(self, event):
         global running
         running = False
         
+        
 
 
 if __name__ == "__main__":
-    # device_list = device.getDeviceList()
-    # index = 0
-
-    # for name in device_list:
-        # print(str(index) + ': ' + name)
-        # index += 1
-    
-    capture_thread = threading.Thread(target=grab, args = (1, q, 1920, 1080, 30))
+   
+    print("OpenCV version: " + cv2.__version__) 
     app = QApplication(sys.argv)
-    w = MyWindowClass(None)
+    w = MyWindowClass()
     w.setWindowTitle('USB Camera TEST')
     w.show()
     app.exec_()
